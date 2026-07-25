@@ -1,0 +1,6 @@
+{
+  "name": "Aemro Guitarist Portfolio",
+  "description": "Official showcase website for master guitarist Aemro, highlighting 32 years of musical experience, featured performance videos, discography, gear, and booking information.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
