@@ -96,7 +96,7 @@ export const Hero: React.FC<HeroProps> = ({ onSelectVideo, onNavigate }) => {
                 {/* Profile Image */}
                 <div className="relative rounded-xl overflow-hidden aspect-[3/4] bg-stone-900 border border-amber-900/30">
                   <img
-                    src="/src/assets/images/aemro_photo_portrait_1784989776415.jpg"
+                    src="/src/assets/images/aemro-fesshaye-mephn.jpg"
                     alt="Aemro Guitarist Portrait with Headless Electric Guitar"
                     className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
                     referrerPolicy="no-referrer"

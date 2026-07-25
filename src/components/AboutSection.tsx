@@ -36,7 +36,7 @@ export const AboutSection: React.FC = () => {
               
               <div className="relative rounded-2xl overflow-hidden aspect-[4/5] bg-stone-900 border border-amber-900/40">
                 <img
-                  src="/src/assets/images/aemro_photo_portrait_1784989776415.jpg"
+                  src="/src/assets/images/aemro-fesshaye-mephn.jpg"
                   alt="Aemro with Headless Electric Guitar"
                   className="w-full h-full object-cover object-center"
                   referrerPolicy="no-referrer"
