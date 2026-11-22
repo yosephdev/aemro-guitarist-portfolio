@@ -1,250 +1,129 @@
-import React, { useState } from 'react';
-import { AEMRO_BIO, MILESTONES } from '../data/bio';
-import { Guitar, Music, Award, Radio, Calendar, Heart, Sparkles, BookOpen, Clock } from 'lucide-react';
+import { BookOpen, Guitar, Heart, MapPin, Music, Quote, Sparkles, Youtube } from 'lucide-react';
+import portrait from '../assets/images/aemro-fesshaye-mephn.jpg';
+import { YOUTUBE_CHANNEL } from '../data/videos';
 
-export const AboutSection: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'timeline' | 'philosophy' | 'styles'>('timeline');
-
+export function AboutSection() {
   return (
-    <section id="story" className="py-24 bg-[#0e0b09] relative overflow-hidden">
-      {/* Background ambient lighting */}
-      <div className="absolute top-1/3 left-0 w-96 h-96 bg-amber-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-10 right-0 w-96 h-96 bg-amber-800/10 rounded-full blur-3xl pointer-events-none" />
+    <section id="story" className="bg-[#ebe1d1] py-24 sm:py-32 relative overflow-hidden">
+      {/* Decorative ambient gradients */}
+      <div className="absolute top-0 right-0 h-96 w-96 rounded-full bg-[#dfc794]/30 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 left-0 h-80 w-80 rounded-full bg-[#315b48]/10 blur-3xl pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-widest">
-            <Clock className="w-3.5 h-3.5" />
-            <span>32 Years of Legacy (1994 - 2026)</span>
+        {/* Main Grid: Portrait and Introduction */}
+        <div className="grid items-center gap-14 lg:grid-cols-[.9fr_1.1fr] lg:gap-20">
+          
+          {/* Portrait with decorative frame and badges */}
+          <div className="relative">
+            <div className="absolute -bottom-5 -left-5 h-full w-full rounded-[2.2rem] border-2 border-[#b68a43]/40 pointer-events-none" />
+            <img
+              src={portrait}
+              alt="Aemro Fesshaye with his guitar"
+              className="relative aspect-[4/5] w-full rounded-[2.2rem] object-cover object-top shadow-2xl"
+            />
+
+            {/* Float badge 1 */}
+            <div className="absolute -right-3 bottom-8 rounded-2xl bg-[#315b48] p-5 text-white shadow-xl sm:-right-8">
+              <Guitar className="h-7 w-7 text-[#e7c881]" />
+              <p className="mt-2 font-serif text-xl">Music with purpose</p>
+              <p className="text-xs text-stone-300">Dedicated to God's glory</p>
+            </div>
+
+            {/* Float badge 2 */}
+            <div className="absolute top-6 left-6 rounded-xl bg-white/90 backdrop-blur px-4 py-2 shadow-lg border border-[#d8cdbb]">
+              <span className="text-xs font-bold uppercase tracking-wider text-[#315b48] flex items-center gap-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-[#b68a43]" /> 30+ Years Craft
+              </span>
+            </div>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-stone-100 tracking-tight">
-            The Story of Aemro
-          </h2>
-          <p className="text-stone-300 text-base sm:text-lg">
-            32 years dedicated to mastering acoustic fingerstyle, Ethio-Jazz pentatonic modal phrasing, and soulful guitar expression.
-          </p>
+
+          {/* Narrative Content */}
+          <div>
+            <span className="eyebrow">
+              <Music className="h-4 w-4" /> Meet Aemro · ስለ አእምሮ
+            </span>
+            <h2 className="section-title mt-5">
+              A guitarist who wants every note to bring peace.
+            </h2>
+
+            <div className="mt-7 space-y-5 text-lg leading-8 text-[#59625c]">
+              <p>
+                Aemro Fesshaye is a dedicated guitarist, worshipper, and Christian living in Katrineholm, Sweden. For over three decades, he has nurtured a distinct fingerstyle and classical acoustic sound that blends traditional East African spiritual melodies with rich contemporary acoustic warmth.
+              </p>
+              <p>
+                Through his classical mezmur arrangements, Aemro strips away complexity to reveal the pure emotion of gospel praise. His instruments sing the verses of hope, repentance, and gratitude—allowing listeners everywhere to reflect quietly on the faithfulness of Christ.
+              </p>
+              <p>
+                Whether playing in intimate prayer settings, collaborating on classical arrangements, or publishing on his YouTube channel, Aemro’s desire is simple: that God be magnified, hearts be encouraged, and listeners experience the peace of God.
+              </p>
+            </div>
+
+            {/* Highlight Metric Cards */}
+            <div className="mt-9 grid gap-4 sm:grid-cols-3">
+              <div className="rounded-2xl border border-[#cabda8] bg-white/65 p-5 shadow-sm">
+                <MapPin className="h-5 w-5 text-[#315b48]" />
+                <p className="mt-3 text-[11px] font-bold uppercase tracking-[.18em] text-[#9a7438]">Based in</p>
+                <p className="mt-1 font-serif text-lg font-bold text-[#1d241f]">Katrineholm, Sweden</p>
+              </div>
+
+              <div className="rounded-2xl border border-[#cabda8] bg-white/65 p-5 shadow-sm">
+                <Quote className="h-5 w-5 text-[#315b48]" />
+                <p className="mt-3 text-[11px] font-bold uppercase tracking-[.18em] text-[#9a7438]">Heart Message</p>
+                <p className="mt-1 font-serif text-lg font-bold text-[#1d241f]">Rejoice in the Lord</p>
+              </div>
+
+              <div className="rounded-2xl border border-[#cabda8] bg-white/65 p-5 shadow-sm">
+                <Youtube className="h-5 w-5 text-red-600 fill-current" />
+                <p className="mt-3 text-[11px] font-bold uppercase tracking-[.18em] text-[#9a7438]">YouTube Channel</p>
+                <a
+                  href={YOUTUBE_CHANNEL.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-1 block font-serif text-lg font-bold text-[#315b48] hover:underline"
+                >
+                  {YOUTUBE_CHANNEL.handle}
+                </a>
+              </div>
+            </div>
+
+          </div>
         </div>
 
-        {/* Content Split: Left Image & Quotes, Right Interactive Story Tabs */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
-          {/* Left Column: Portrait & Quote Card */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="relative rounded-3xl bg-[#181310] border border-amber-800/40 p-6 shadow-2xl space-y-6">
-              
-              <div className="relative rounded-2xl overflow-hidden aspect-[4/5] bg-stone-900 border border-amber-900/40">
-                <img
-                  src="/src/assets/images/aemro-fesshaye-mephn.jpg"
-                  alt="Aemro with Headless Electric Guitar"
-                  className="w-full h-full object-cover object-center"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#181310] via-transparent to-transparent opacity-90" />
-                
-                <div className="absolute top-4 right-4 px-3 py-1.5 rounded-full bg-amber-500 text-stone-950 text-xs font-black uppercase tracking-wider shadow-lg">
-                  32 Years
-                </div>
-
-                <div className="absolute bottom-6 left-6 right-6 space-y-1">
-                  <h3 className="text-2xl font-black text-amber-100">Aemro</h3>
-                  <p className="text-xs text-amber-400 font-medium tracking-wide uppercase">
-                    Ethio-Jazz & Acoustic Fingerstyle Master
-                  </p>
-                </div>
-              </div>
-
-              {/* Quote Box */}
-              <blockquote className="p-5 rounded-2xl bg-amber-950/30 border border-amber-800/40 space-y-3 relative">
-                <span className="absolute top-3 right-4 text-4xl text-amber-500/20 font-serif">“</span>
-                <p className="text-stone-200 text-sm italic leading-relaxed">
-                  {AEMRO_BIO.quote}
-                </p>
-                <div className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                  — Aemro
-                </div>
-              </blockquote>
-
-              {/* Stats badges */}
-              <div className="grid grid-cols-2 gap-3 pt-2">
-                <div className="p-3 rounded-xl bg-stone-900/80 border border-amber-900/30 text-center">
-                  <div className="text-xl font-bold text-amber-300">1994</div>
-                  <div className="text-[10px] uppercase tracking-wider text-stone-400">First Guitar</div>
-                </div>
-                <div className="p-3 rounded-xl bg-stone-900/80 border border-amber-900/30 text-center">
-                  <div className="text-xl font-bold text-amber-300">32 Yrs</div>
-                  <div className="text-[10px] uppercase tracking-wider text-stone-400">Active Virtuosity</div>
-                </div>
-              </div>
-
+        {/* Core Pillars / Ministry Principles */}
+        <div className="mt-20 grid gap-6 sm:grid-cols-3">
+          <div className="rounded-[1.8rem] border border-[#d8cdbb] bg-white/70 p-8 shadow-sm">
+            <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#315b48] text-[#f4dc9a]">
+              <Guitar className="h-6 w-6" />
             </div>
+            <h3 className="mt-5 font-serif text-2xl text-[#1d241f]">Classical Gospel Touch</h3>
+            <p className="mt-3 text-sm leading-relaxed text-[#59625c]">
+              Combining fingerstyle technique, Ethiopian pentatonic modes (Tizita, Bati), and acoustic clarity to create contemplative gospel classical arrangements.
+            </p>
           </div>
 
-          {/* Right Column: Tabs (Timeline / Philosophy / Styles) */}
-          <div className="lg:col-span-7 space-y-8">
-            
-            {/* Tab navigation buttons */}
-            <div className="flex items-center gap-2 border-b border-amber-900/40 pb-4 overflow-x-auto">
-              <button
-                onClick={() => setActiveTab('timeline')}
-                id="story-tab-timeline"
-                className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 whitespace-nowrap transition-all ${
-                  activeTab === 'timeline'
-                    ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20'
-                    : 'bg-stone-900 text-stone-300 border border-amber-900/30 hover:border-amber-500/40'
-                }`}
-              >
-                <Calendar className="w-4 h-4" />
-                <span>32-Year Timeline</span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('philosophy')}
-                id="story-tab-philosophy"
-                className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 whitespace-nowrap transition-all ${
-                  activeTab === 'philosophy'
-                    ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20'
-                    : 'bg-stone-900 text-stone-300 border border-amber-900/30 hover:border-amber-500/40'
-                }`}
-              >
-                <Heart className="w-4 h-4" />
-                <span>Musical Philosophy</span>
-              </button>
-
-              <button
-                onClick={() => setActiveTab('styles')}
-                id="story-tab-styles"
-                className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 whitespace-nowrap transition-all ${
-                  activeTab === 'styles'
-                    ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20'
-                    : 'bg-stone-900 text-stone-300 border border-amber-900/30 hover:border-amber-500/40'
-                }`}
-              >
-                <Music className="w-4 h-4" />
-                <span>Scales & Mastery</span>
-              </button>
+          <div className="rounded-[1.8rem] border border-[#d8cdbb] bg-white/70 p-8 shadow-sm">
+            <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#315b48] text-[#f4dc9a]">
+              <BookOpen className="h-6 w-6" />
             </div>
-
-            {/* TAB 1: TIMELINE */}
-            {activeTab === 'timeline' && (
-              <div className="space-y-6">
-                <p className="text-stone-300 text-sm leading-relaxed">
-                  Across 32 years of guitar playing, Aemro has built a rich artistic narrative from self-taught roots to global digital performances.
-                </p>
-
-                <div className="relative pl-6 sm:pl-8 border-l-2 border-amber-800/50 space-y-8">
-                  {MILESTONES.map((item, idx) => (
-                    <div key={idx} className="relative group">
-                      {/* Timeline dot */}
-                      <div className="absolute -left-[31px] sm:-left-[39px] top-1 w-6 h-6 rounded-full bg-amber-500 text-stone-950 flex items-center justify-center text-xs font-bold shadow-lg shadow-amber-500/30 group-hover:scale-125 transition-transform">
-                        <Sparkles className="w-3.5 h-3.5" />
-                      </div>
-
-                      <div className="p-5 rounded-2xl bg-[#181310] border border-amber-900/30 hover:border-amber-500/40 transition-colors space-y-2">
-                        <div className="flex items-center justify-between">
-                          <span className="px-2.5 py-1 rounded bg-amber-500/20 text-amber-300 font-mono text-xs font-bold">
-                            {item.year}
-                          </span>
-                          <span className="text-xs text-stone-400 italic">
-                            {item.subtitle}
-                          </span>
-                        </div>
-                        <h4 className="text-lg font-bold text-stone-100">
-                          {item.title}
-                        </h4>
-                        <p className="text-xs sm:text-sm text-stone-300 leading-relaxed">
-                          {item.description}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* TAB 2: PHILOSOPHY */}
-            {activeTab === 'philosophy' && (
-              <div className="space-y-6">
-                <div className="p-6 rounded-2xl bg-[#181310] border border-amber-900/30 space-y-4">
-                  <h3 className="text-xl font-bold text-amber-300 flex items-center gap-2">
-                    <BookOpen className="w-5 h-5 text-amber-400" />
-                    <span>The Art of 6-String Storytelling</span>
-                  </h3>
-                  
-                  {AEMRO_BIO.biographyParagraphs.map((para, i) => (
-                    <p key={i} className="text-stone-300 text-sm leading-relaxed">
-                      {para}
-                    </p>
-                  ))}
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="p-4 rounded-xl bg-amber-950/30 border border-amber-800/30">
-                    <h4 className="text-sm font-bold text-stone-100 mb-1">Tone & Touch</h4>
-                    <p className="text-xs text-stone-300">
-                      Focusing on string resonance, dynamic flesh-and-nail attack, and natural acoustic timbre without artificial compensation.
-                    </p>
-                  </div>
-
-                  <div className="p-4 rounded-xl bg-amber-950/30 border border-amber-800/30">
-                    <h4 className="text-sm font-bold text-stone-100 mb-1">Rhythmic Intimacy</h4>
-                    <p className="text-xs text-stone-300">
-                      Syncopated fingerpicking that flows seamlessly like human breath, marrying traditional African polyrhythms with Western chord voicings.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* TAB 3: SCALES & MASTERY */}
-            {activeTab === 'styles' && (
-              <div className="space-y-6">
-                <p className="text-stone-300 text-sm">
-                  Aemro specializes in unique Ethiopian modal scale systems (Kizita, Bati, Anchihoye, Ambassel) as well as classical fingerstyle and blues improvisations.
-                </p>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="p-5 rounded-2xl bg-[#181310] border border-amber-900/30 space-y-2">
-                    <div className="text-xs font-bold text-amber-400 uppercase">Ethio-Jazz Pentatonics</div>
-                    <div className="text-base font-bold text-stone-100">Tizita & Bati Modes</div>
-                    <p className="text-xs text-stone-300">
-                      Five-note scales expressing profound nostalgia, microtonal bends, and expressive melodic slides.
-                    </p>
-                  </div>
-
-                  <div className="p-5 rounded-2xl bg-[#181310] border border-amber-900/30 space-y-2">
-                    <div className="text-xs font-bold text-amber-400 uppercase">Fingerstyle Acoustic</div>
-                    <div className="text-base font-bold text-stone-100">Polyphonic Bass & Melody</div>
-                    <p className="text-xs text-stone-300">
-                      Simultaneously driving walking basslines, inner vocal chords, and soaring lead melodies on a single guitar.
-                    </p>
-                  </div>
-
-                  <div className="p-5 rounded-2xl bg-[#181310] border border-amber-900/30 space-y-2">
-                    <div className="text-xs font-bold text-amber-400 uppercase">Electric Blues Solos</div>
-                    <div className="text-base font-bold text-stone-100">Sustained Tube Warmth</div>
-                    <p className="text-xs text-stone-300">
-                      Deep emotional bends and wide vibrato on vintage electric setups with dynamic volume knob swells.
-                    </p>
-                  </div>
-
-                  <div className="p-5 rounded-2xl bg-[#181310] border border-amber-900/30 space-y-2">
-                    <div className="text-xs font-bold text-amber-400 uppercase">Modal Tunings</div>
-                    <div className="text-base font-bold text-stone-100">DADGAD & Drop D</div>
-                    <p className="text-xs text-stone-300">
-                      Open drone strings allowing hypnotic drone harmonies and atmospheric acoustic depth.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            )}
-
+            <h3 className="mt-5 font-serif text-2xl text-[#1d241f]">Scriptural Grounding</h3>
+            <p className="mt-3 text-sm leading-relaxed text-[#59625c]">
+              Rooted in the timeless scriptures of the Bible. Every melody carries the weight of biblical meditation, praising the Lord with stringed instruments.
+            </p>
           </div>
 
+          <div className="rounded-[1.8rem] border border-[#d8cdbb] bg-white/70 p-8 shadow-sm">
+            <div className="grid h-12 w-12 place-items-center rounded-2xl bg-[#315b48] text-[#f4dc9a]">
+              <Heart className="h-6 w-6" />
+            </div>
+            <h3 className="mt-5 font-serif text-2xl text-[#1d241f]">Fellowship & Fellowship</h3>
+            <p className="mt-3 text-sm leading-relaxed text-[#59625c]">
+              Welcoming conversations with fellow believers, admirers, and music lovers across Sweden, the Ethiopian and Eritrean diaspora, and worldwide.
+            </p>
+          </div>
         </div>
 
       </div>
     </section>
   );
-};
+}

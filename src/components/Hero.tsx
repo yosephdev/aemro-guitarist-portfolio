@@ -1,167 +1,115 @@
-import React from 'react';
-import { Play, Sparkles, Award, Music, Guitar, Calendar, ArrowRight } from 'lucide-react';
-import { AEMRO_BIO } from '../data/bio';
-import { PERFORMANCE_VIDEOS } from '../data/videos';
+import { ArrowDown, Facebook, MapPin, Music2, Play, Sparkles, Youtube } from 'lucide-react';
+import portrait from '../assets/images/aemro-fesshaye-mephn.jpg';
+import stage from '../assets/images/stage_hero_bg_1784986392488.jpg';
+import { YOUTUBE_CHANNEL } from '../data/videos';
 
 interface HeroProps {
-  onSelectVideo: (videoId: string) => void;
   onNavigate: (sectionId: string) => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onSelectVideo, onNavigate }) => {
-  const featuredVideo = PERFORMANCE_VIDEOS[0];
-
+export function Hero({ onNavigate }: HeroProps) {
   return (
-    <section id="hero" className="relative min-h-screen pt-28 pb-16 flex items-center overflow-hidden bg-[#0e0b09]">
-      {/* Background image overlay */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="/src/assets/images/stage_hero_bg_1784986392488.jpg"
-          alt="Guitar Stage Background"
-          className="w-full h-full object-cover object-center opacity-25 filter contrast-125"
-          referrerPolicy="no-referrer"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0e0b09] via-[#0e0b09]/80 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0e0b09] via-[#0e0b09]/90 to-transparent" />
-      </div>
+    <section id="home" className="relative min-h-[780px] overflow-hidden bg-[#13231c] pt-24 text-white lg:min-h-screen">
+      {/* Stage background with atmospheric overlay */}
+      <img src={stage} alt="" className="absolute inset-0 h-full w-full object-cover opacity-20" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,#13231c_0%,rgba(19,35,28,.95)_50%,rgba(19,35,28,.4)_100%)]" />
+      <div className="absolute -right-32 top-28 h-96 w-96 rounded-full bg-[#c69a4b]/20 blur-3xl pointer-events-none" />
+      <div className="absolute left-10 bottom-10 h-72 w-72 rounded-full bg-[#315b48]/30 blur-3xl pointer-events-none" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* Left Column - Main Copy & CTAs */}
-          <div className="lg:col-span-7 space-y-6 text-left">
-            {/* 32 Year Pill */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs sm:text-sm font-semibold tracking-wider uppercase backdrop-blur-md">
-              <Award className="w-4 h-4 text-amber-400 animate-pulse" />
-              <span>32 Years of Guitar Virtuosity (1994 - 2026)</span>
-            </div>
-
-            <h1 className="text-4xl sm:text-6xl xl:text-7xl font-extrabold text-stone-100 tracking-tight leading-[1.1]">
-              AEMRO <br />
-              <span className="bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600 bg-clip-text text-transparent">
-                32 Years of Strings, Soul & Ethio-Jazz
-              </span>
-            </h1>
-
-            <p className="text-stone-300 text-base sm:text-xl max-w-2xl font-normal leading-relaxed">
-              Mastering the 6-string acoustic & electric canvas across three decades.
-              Blending Ethio-Jazz modal scales, fingerstyle acoustic storytelling, and blues solos.
-            </p>
-
-            {/* CTAs */}
-            <div className="pt-2 flex flex-wrap items-center gap-4">
-              <button
-                onClick={() => onSelectVideo(featuredVideo.youtubeId)}
-                id="hero-featured-video-btn"
-                className="flex items-center gap-3 px-7 py-4 rounded-full text-sm font-bold text-stone-950 bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 hover:brightness-110 shadow-xl shadow-amber-500/20 transition-all transform hover:-translate-y-0.5 group"
-              >
-                <div className="w-7 h-7 rounded-full bg-stone-950/20 flex items-center justify-center">
-                  <Play className="w-4 h-4 text-stone-950 fill-stone-950 group-hover:scale-110 transition-transform" />
-                </div>
-                <span>Watch Featured Video</span>
-              </button>
-
-              <button
-                onClick={() => onNavigate('booking')}
-                id="hero-book-btn"
-                className="flex items-center gap-2 px-6 py-4 rounded-full text-sm font-semibold text-stone-200 bg-stone-900/80 border border-amber-800/50 hover:bg-amber-950/50 hover:border-amber-500/60 transition-all"
-              >
-                <Calendar className="w-4 h-4 text-amber-400" />
-                <span>Book Performance</span>
-              </button>
-            </div>
-
-            {/* Stats row */}
-            <div className="pt-8 border-t border-amber-900/30 grid grid-cols-2 sm:grid-cols-4 gap-6">
-              {AEMRO_BIO.stats.map((stat, idx) => (
-                <div key={idx} className="space-y-1">
-                  <div className="text-2xl sm:text-3xl font-extrabold text-amber-400 font-mono">
-                    {stat.value}
-                  </div>
-                  <div className="text-xs text-stone-400 font-medium uppercase tracking-wider">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
+      <div className="relative mx-auto grid min-h-[calc(100vh-6rem)] max-w-7xl items-center gap-12 px-5 py-14 sm:px-8 lg:grid-cols-[1.1fr_.9fr] lg:py-16">
+        <div className="max-w-3xl">
+          <div className="mb-6 flex flex-wrap items-center gap-3">
+            <span className="inline-flex items-center gap-2 rounded-full bg-[#d9b56d]/15 px-3.5 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-[#e7c881] border border-[#d9b56d]/30">
+              <Sparkles className="h-3.5 w-3.5" /> Faith · Classical Guitar · Katrineholm
+            </span>
           </div>
 
-          {/* Right Column - Profile Image Card & Video Teasers */}
-          <div className="lg:col-span-5 relative">
-            <div className="relative mx-auto max-w-md lg:max-w-none">
-              {/* Decorative Frame Glow */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-amber-600 via-amber-400 to-amber-800 rounded-3xl blur-lg opacity-30 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
-              
-              <div className="relative rounded-2xl bg-[#181310] border border-amber-800/40 p-4 sm:p-5 shadow-2xl space-y-4">
-                {/* Profile Image */}
-                <div className="relative rounded-xl overflow-hidden aspect-[3/4] bg-stone-900 border border-amber-900/30">
-                  <img
-                    src="/src/assets/images/aemro-fesshaye-mephn.jpg"
-                    alt="Aemro Guitarist Portrait with Headless Electric Guitar"
-                    className="w-full h-full object-cover object-center transform hover:scale-105 transition-transform duration-700"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#14100e] via-transparent to-transparent opacity-80" />
-                  
-                  {/* Floating Badge on Profile */}
-                  <div className="absolute bottom-4 left-4 right-4 p-3 rounded-lg bg-[#181310]/90 backdrop-blur-md border border-amber-500/30">
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-amber-500/20 text-amber-400">
-                        <Guitar className="w-5 h-5" />
-                      </div>
-                      <div>
-                        <div className="text-xs font-bold text-amber-200">Aemro Guitar Soloist</div>
-                        <div className="text-[11px] text-stone-400">Acoustic, Ethio-Jazz & Blues</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+          <h1 className="font-serif text-5xl leading-[.96] sm:text-7xl lg:text-[5.4rem]">
+            Strings, soul<br />
+            <span className="italic text-[#e7c881]">& steadfast faith.</span>
+          </h1>
 
-                {/* Video Links Quick Strip */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between text-xs font-bold text-amber-300 uppercase tracking-wider px-1">
-                    <span>Selected YouTube Links</span>
-                    <button
-                      onClick={() => onNavigate('videos')}
-                      className="text-[11px] text-stone-400 hover:text-amber-300 flex items-center gap-1"
-                    >
-                      View All (4) <ArrowRight className="w-3 h-3" />
-                    </button>
-                  </div>
+          <p className="mt-4 font-serif text-xl sm:text-2xl text-[#d7c7a7] italic">
+            “በገና፣ ነፍስ እና በክርስቶስ ያለ ጽኑ እምነት”
+          </p>
 
-                  <div className="grid grid-cols-2 gap-2">
-                    {PERFORMANCE_VIDEOS.slice(0, 2).map((vid) => (
-                      <button
-                        key={vid.id}
-                        onClick={() => onSelectVideo(vid.youtubeId)}
-                        id={`hero-quick-video-${vid.id}`}
-                        className="group flex flex-col gap-1 p-2 rounded-lg bg-stone-900/70 hover:bg-amber-950/50 border border-amber-900/30 hover:border-amber-500/40 text-left transition-all"
-                      >
-                        <div className="relative rounded overflow-hidden aspect-video bg-stone-950">
-                          <img
-                            src={`https://img.youtube.com/vi/${vid.youtubeId}/hqdefault.jpg`}
-                            alt={vid.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform"
-                            referrerPolicy="no-referrer"
-                          />
-                          <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-amber-950/40">
-                            <Play className="w-5 h-5 text-amber-300 fill-amber-300" />
-                          </div>
-                        </div>
-                        <div className="text-[11px] font-semibold text-stone-200 line-clamp-1 group-hover:text-amber-300">
-                          {vid.title}
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
+          <p className="mt-6 max-w-xl text-lg leading-8 text-stone-200">
+            Meet Aemro Fesshaye — a guitarist in Katrineholm, Sweden sharing classical gospel mezmur, praise melodies, and the transformative love found in Jesus Christ.
+          </p>
 
-              </div>
-            </div>
+          <div className="mt-9 flex flex-wrap items-center gap-3.5">
+            <button
+              onClick={() => onNavigate('music')}
+              className="inline-flex items-center gap-2 rounded-full bg-[#d9b56d] px-6 py-3.5 font-semibold text-[#13231c] shadow-lg shadow-[#d9b56d]/20 transition hover:-translate-y-0.5 hover:bg-[#e7c881]"
+            >
+              <Play className="h-4 w-4 fill-current ml-0.5" /> Listen & Watch Videos
+            </button>
+            <button
+              onClick={() => onNavigate('faith')}
+              className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/5 px-6 py-3.5 font-semibold text-white backdrop-blur transition hover:bg-white/10"
+            >
+              Scripture & Faith <ArrowDown className="h-4 w-4" />
+            </button>
+            <a
+              href={YOUTUBE_CHANNEL.url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-full bg-red-600/90 px-5 py-3.5 font-semibold text-white transition hover:bg-red-600 hover:-translate-y-0.5"
+            >
+              <Youtube className="h-4 w-4 fill-current" /> YouTube Channel
+            </a>
           </div>
 
+          {/* Location & Social Pills */}
+          <div className="mt-12 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-white/15 pt-6 text-sm text-stone-300">
+            <span className="flex items-center gap-2">
+              <MapPin className="h-4 w-4 text-[#e7c881]" /> Katrineholm, Sweden
+            </span>
+            <span className="flex items-center gap-2">
+              <Music2 className="h-4 w-4 text-[#e7c881]" /> Gospel Classical Guitar
+            </span>
+            <a
+              href={YOUTUBE_CHANNEL.url}
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 text-stone-200 transition hover:text-[#e7c881]"
+            >
+              <Youtube className="h-4 w-4 text-red-500 fill-current" /> {YOUTUBE_CHANNEL.handle}
+            </a>
+            <a
+              href="https://www.facebook.com/search/top?q=Aemro%20Fesshaye"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 text-stone-200 transition hover:text-[#e7c881]"
+            >
+              <Facebook className="h-4 w-4 text-[#e7c881]" /> Aemro Fesshaye
+            </a>
+          </div>
         </div>
+
+        {/* Hero Portrait with Decorative Frame */}
+        <div className="relative mx-auto w-full max-w-md lg:ml-auto">
+          <div className="absolute -inset-4 rotate-3 rounded-[2.2rem] border border-[#d9b56d]/30 pointer-events-none" />
+          <div className="relative overflow-hidden rounded-[2.2rem] border border-white/15 bg-[#24382f] p-3.5 shadow-2xl">
+            <img
+              src={portrait}
+              alt="Aemro Fesshaye with his guitar"
+              className="aspect-[3/4] w-full rounded-[1.6rem] object-cover object-top"
+            />
+            
+            {/* Overlay scripture card */}
+            <div className="absolute inset-x-7 bottom-7 rounded-2xl border border-white/20 bg-[#13231c]/92 p-5 backdrop-blur-md shadow-xl">
+              <p lang="am" className="font-serif text-xl sm:text-2xl text-white leading-snug">
+                “ሁልጊዜ በጌታ ደስ ይበላችሁ፤ ደግሜ እላለሁ፥ ደስ ይበላችሁ።”
+              </p>
+              <p className="mt-2 text-xs uppercase tracking-[.2em] text-[#e7c881] font-semibold">
+                Philippians 4:4 · ፊልጵስዩስ 4:4
+              </p>
+            </div>
+          </div>
+        </div>
+
       </div>
     </section>
   );
-};
+}

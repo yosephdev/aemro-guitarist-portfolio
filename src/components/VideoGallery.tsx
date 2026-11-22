@@ -1,223 +1,269 @@
-import React, { useState } from 'react';
-import { Play, ExternalLink, Sparkles, Music, Disc, Layers, Check, Share2, Eye } from 'lucide-react';
-import { PERFORMANCE_VIDEOS } from '../data/videos';
+import { useState } from 'react';
+import { Check, Copy, ExternalLink, Music2, Play, Share2, Youtube } from 'lucide-react';
+import { PERFORMANCE_VIDEOS, YOUTUBE_CHANNEL } from '../data/videos';
 import { VideoItem } from '../types';
 
-interface VideoGalleryProps {
-  selectedVideoId: string | null;
-  onSelectVideo: (youtubeId: string) => void;
-}
+const CATEGORIES = [
+  { id: 'All', label: 'All Videos', amharic: 'ሁሉንም' },
+  { id: 'Protestant Mezmur', label: 'Protestant Mezmur', amharic: 'የፕሮቴስታንት መዝሙር' },
+  { id: 'Praise & Thanksgiving', label: 'Praise & Thanks', amharic: 'ምስጋና' },
+  { id: 'Tigrinya Mezmur', label: 'Tigrinya Mezmur', amharic: 'ትግርኛ መዝሙር' },
+  { id: 'Acoustic Sessions', label: 'Acoustic Sessions', amharic: 'አኮስቲክ' },
+  { id: 'Instrumentals', label: 'Instrumentals', amharic: 'ኢንስትሩመንታል' },
+];
 
-export const VideoGallery: React.FC<VideoGalleryProps> = ({ selectedVideoId, onSelectVideo }) => {
-  const [activeCategory, setActiveCategory] = useState<string>('All');
-  const [copiedLink, setCopiedLink] = useState<string | null>(null);
+export function VideoGallery() {
+  const [activeId, setActiveId] = useState(PERFORMANCE_VIDEOS[0].youtubeId);
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [copiedVideo, setCopiedVideo] = useState(false);
 
-  const categories = ['All', 'Acoustic Solo', 'Ethio-Jazz', 'Live Performance', 'Improvisation'];
+  const activeVideo: VideoItem =
+    PERFORMANCE_VIDEOS.find((v) => v.youtubeId === activeId) ?? PERFORMANCE_VIDEOS[0];
 
-  const activeVideo = PERFORMANCE_VIDEOS.find((v) => v.youtubeId === selectedVideoId) || PERFORMANCE_VIDEOS[0];
+  const filteredVideos =
+    selectedCategory === 'All'
+      ? PERFORMANCE_VIDEOS
+      : PERFORMANCE_VIDEOS.filter((v) => v.category === selectedCategory);
 
-  const filteredVideos = activeCategory === 'All'
-    ? PERFORMANCE_VIDEOS
-    : PERFORMANCE_VIDEOS.filter((v) => v.category === activeCategory);
-
-  const handleShare = (youtubeId: string) => {
-    const url = `https://youtu.be/${youtubeId}`;
-    navigator.clipboard.writeText(url);
-    setCopiedLink(youtubeId);
-    setTimeout(() => setCopiedLink(null), 2500);
+  const handleCopyVideoUrl = () => {
+    const url = `https://youtu.be/${activeVideo.youtubeId}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopiedVideo(true);
+      setTimeout(() => setCopiedVideo(false), 2000);
+    });
   };
 
   return (
-    <section id="videos" className="py-24 bg-[#120e0c] relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="music" className="bg-[#13231c] py-24 text-white sm:py-32 relative overflow-hidden">
+      {/* Background ambient lighting */}
+      <div className="absolute top-10 left-1/4 h-96 w-96 rounded-full bg-[#d9b56d]/10 blur-3xl pointer-events-none" />
+      <div className="absolute bottom-10 right-10 h-80 w-80 rounded-full bg-[#315b48]/20 blur-3xl pointer-events-none" />
+
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         
-        {/* Section Title */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-widest">
-            <Play className="w-3.5 h-3.5" />
-            <span>Featured YouTube Performances</span>
+        {/* Header and Channel Banner */}
+        <div className="mb-12 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+          <div className="max-w-2xl">
+            <span className="eyebrow eyebrow-dark">
+              <Music2 className="h-4 w-4" /> Music & Performances · ቪዲዮዎችና ዝማሬ
+            </span>
+            <h2 className="mt-5 font-serif text-4xl leading-tight sm:text-6xl">
+              Hear the heart<br />
+              <span className="italic text-[#e7c881]">behind the strings.</span>
+            </h2>
+            <p className="mt-5 text-base sm:text-lg leading-7 text-stone-300">
+              A collection of classical guitar arrangements of Ethiopian & Tigrinya gospel hymns, praise melodies, and acoustic meditations by Aemro.
+            </p>
           </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-stone-100 tracking-tight">
-            Watch Aemro in Action
-          </h2>
-          <p className="text-stone-300 text-base sm:text-lg">
-            32 years of guitar expression captured across acoustic solos, Ethio-Jazz pentatonic scale jams, and stage improvisations.
-          </p>
-        </div>
 
-        {/* Featured Video Theater Frame */}
-        <div className="mb-16 bg-[#1a1411] border border-amber-800/40 rounded-3xl p-4 sm:p-6 shadow-2xl overflow-hidden">
-          <div className="flex flex-col lg:flex-row gap-6 items-stretch">
-            
-            {/* Embedded YouTube Player */}
-            <div className="lg:w-2/3 flex flex-col justify-center">
-              <div className="relative w-full aspect-video rounded-2xl overflow-hidden bg-black shadow-inner border border-amber-900/30">
-                <iframe
-                  src={`https://www.youtube.com/embed/${activeVideo.youtubeId}?autoplay=0&rel=0`}
-                  title={activeVideo.title}
-                  className="w-full h-full"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                />
+          {/* Official YouTube Channel Pill Card */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 rounded-2xl border border-white/15 bg-white/5 p-4 backdrop-blur-lg">
+            <div className="flex items-center gap-3">
+              <div className="grid h-12 w-12 place-items-center rounded-xl bg-red-600 text-white shadow-lg">
+                <Youtube className="h-6 w-6 fill-current" />
+              </div>
+              <div>
+                <p className="font-semibold text-white">{YOUTUBE_CHANNEL.name}</p>
+                <p className="text-xs text-[#e7c881]">{YOUTUBE_CHANNEL.handle}</p>
               </div>
             </div>
-
-            {/* Video Details Side Panel */}
-            <div className="lg:w-1/3 flex flex-col justify-between space-y-4 p-2">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="px-3 py-1 rounded-full text-xs font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30 uppercase tracking-wider">
-                    {activeVideo.category}
-                  </span>
-                  <span className="text-xs text-stone-400 font-mono">
-                    Year: {activeVideo.publishedYear}
-                  </span>
-                </div>
-
-                <h3 className="text-xl font-bold text-stone-100 leading-snug">
-                  {activeVideo.title}
-                </h3>
-
-                <p className="text-sm text-stone-300 leading-relaxed">
-                  {activeVideo.description}
-                </p>
-
-                {/* Music metadata pill list */}
-                <div className="pt-2 space-y-2 text-xs font-mono text-stone-400 border-t border-amber-900/30">
-                  {activeVideo.tuning && (
-                    <div className="flex justify-between">
-                      <span className="text-stone-400">Tuning:</span>
-                      <span className="text-amber-300 font-medium">{activeVideo.tuning}</span>
-                    </div>
-                  )}
-                  {activeVideo.keySignature && (
-                    <div className="flex justify-between">
-                      <span className="text-stone-400">Key / Scale:</span>
-                      <span className="text-amber-300 font-medium">{activeVideo.keySignature}</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between">
-                    <span className="text-stone-400">Duration:</span>
-                    <span className="text-amber-300 font-medium">{activeVideo.duration}</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Action Buttons */}
-              <div className="pt-4 flex items-center gap-3 border-t border-amber-900/30">
-                <a
-                  href={`https://youtu.be/${activeVideo.youtubeId}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 flex items-center justify-center gap-2 py-2.5 px-4 rounded-xl bg-amber-500 text-stone-950 font-bold text-xs uppercase tracking-wider hover:bg-amber-400 transition-colors shadow-lg shadow-amber-500/20"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  <span>Open on YouTube</span>
-                </a>
-
-                <button
-                  onClick={() => handleShare(activeVideo.youtubeId)}
-                  id="share-active-video-btn"
-                  className="p-2.5 rounded-xl bg-stone-900 border border-amber-900/40 text-stone-300 hover:text-amber-300 hover:border-amber-500/50 transition-colors"
-                  title="Copy video link"
-                >
-                  {copiedLink === activeVideo.youtubeId ? (
-                    <Check className="w-4 h-4 text-emerald-400" />
-                  ) : (
-                    <Share2 className="w-4 h-4" />
-                  )}
-                </button>
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        {/* Category Filters */}
-        <div className="flex items-center justify-center flex-wrap gap-2 mb-10">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              id={`video-category-${cat.toLowerCase().replace(/\s+/g, '-')}`}
-              className={`px-5 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
-                activeCategory === cat
-                  ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20'
-                  : 'bg-stone-900/80 text-stone-300 border border-amber-900/40 hover:border-amber-500/40 hover:text-amber-200'
-              }`}
+            <a
+              href={YOUTUBE_CHANNEL.url}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-[#d9b56d] px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-[#13231c] transition hover:bg-[#e7c881]"
             >
-              {cat}
-            </button>
-          ))}
+              Visit Channel <ExternalLink className="h-3.5 w-3.5" />
+            </a>
+          </div>
         </div>
 
-        {/* Grid of 4 YouTube Videos */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {filteredVideos.map((video) => {
-            const isCurrentlyPlaying = video.youtubeId === activeVideo.youtubeId;
+        {/* Video Category Filter Tabs */}
+        <div className="mb-8 flex flex-wrap items-center gap-2 border-b border-white/10 pb-4">
+          {CATEGORIES.map((cat) => {
+            const isActive = selectedCategory === cat.id;
             return (
-              <div
-                key={video.id}
-                onClick={() => onSelectVideo(video.youtubeId)}
-                className={`group relative rounded-2xl bg-[#181310] border transition-all duration-300 cursor-pointer overflow-hidden flex flex-col justify-between ${
-                  isCurrentlyPlaying
-                    ? 'border-amber-500 shadow-xl shadow-amber-500/20 ring-1 ring-amber-500'
-                    : 'border-amber-900/30 hover:border-amber-500/50 hover:shadow-lg hover:shadow-amber-900/30'
+              <button
+                key={cat.id}
+                onClick={() => setSelectedCategory(cat.id)}
+                className={`rounded-full px-4 py-2 text-xs font-bold uppercase tracking-wider transition ${
+                  isActive
+                    ? 'bg-[#d9b56d] text-[#13231c] shadow-lg'
+                    : 'bg-white/5 text-stone-300 border border-white/10 hover:border-white/30 hover:bg-white/10 hover:text-white'
                 }`}
               >
-                {/* Video Thumbnail */}
-                <div className="relative aspect-video w-full overflow-hidden bg-black">
-                  <img
-                    src={`https://img.youtube.com/vi/${video.youtubeId}/hqdefault.jpg`}
-                    alt={video.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    referrerPolicy="no-referrer"
-                  />
-                  <div className="absolute inset-0 bg-black/40 group-hover:bg-amber-950/40 transition-colors flex items-center justify-center">
-                    <div className="w-12 h-12 rounded-full bg-amber-500/90 text-stone-950 flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
-                      <Play className="w-6 h-6 fill-stone-950 ml-0.5" />
+                <span>{cat.label}</span>
+                <span className="ml-1.5 opacity-65 font-normal">({cat.amharic})</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Player and List Layout */}
+        <div className="grid gap-8 lg:grid-cols-[1.3fr_0.9fr]">
+          
+          {/* Main Active Player */}
+          <div className="overflow-hidden rounded-[1.8rem] border border-white/15 bg-black shadow-2xl flex flex-col justify-between">
+            <div className="aspect-video w-full bg-black">
+              <iframe
+                className="h-full w-full"
+                src={`https://www.youtube-nocookie.com/embed/${activeVideo.youtubeId}?rel=0&autoplay=0`}
+                title={activeVideo.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+              />
+            </div>
+
+            {/* Now Playing Info Bar */}
+            <div className="bg-[#192f25] p-6 sm:p-8 space-y-4">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <span className="inline-flex items-center gap-2 rounded-full bg-[#d9b56d]/15 px-3 py-1 text-xs font-bold uppercase tracking-widest text-[#e7c881]">
+                  <Music2 className="h-3.5 w-3.5" /> {activeVideo.category}
+                </span>
+
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleCopyVideoUrl}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-xs text-stone-200 transition hover:bg-white/15 hover:text-white"
+                    title="Copy video link"
+                  >
+                    {copiedVideo ? (
+                      <>
+                        <Check className="h-3.5 w-3.5 text-emerald-400" /> Link Copied
+                      </>
+                    ) : (
+                      <>
+                        <Share2 className="h-3.5 w-3.5" /> Share
+                      </>
+                    )}
+                  </button>
+
+                  <a
+                    href={`https://youtu.be/${activeVideo.youtubeId}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-lg bg-[#d9b56d] px-3.5 py-1.5 text-xs font-bold uppercase tracking-wider text-[#13231c] transition hover:bg-[#e7c881]"
+                  >
+                    Watch on YouTube <ExternalLink className="h-3.5 w-3.5" />
+                  </a>
+                </div>
+              </div>
+
+              <div>
+                {activeVideo.amharicTitle && (
+                  <p lang="am" className="font-serif text-xl sm:text-2xl text-[#f3eedd] leading-snug">
+                    {activeVideo.amharicTitle}
+                  </p>
+                )}
+                <h3 className="mt-1 font-serif text-lg sm:text-xl text-stone-300">
+                  {activeVideo.title}
+                </h3>
+              </div>
+
+              <p className="text-sm text-stone-300 leading-relaxed">
+                {activeVideo.description}
+              </p>
+
+              {(activeVideo.tuning || activeVideo.keySignature) && (
+                <div className="flex flex-wrap items-center gap-4 pt-2 border-t border-white/10 text-xs text-stone-400 font-mono">
+                  {activeVideo.tuning && <span>Tuning: {activeVideo.tuning}</span>}
+                  {activeVideo.keySignature && <span>Key: {activeVideo.keySignature}</span>}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Videos Playlist Scrollbar / Grid */}
+          <div className="flex flex-col gap-3 max-h-[720px] overflow-y-auto pr-2 custom-scrollbar">
+            <div className="text-xs uppercase tracking-widest text-[#d9b56d] font-bold px-1 mb-1">
+              Playlist ({filteredVideos.length} {filteredVideos.length === 1 ? 'Video' : 'Videos'})
+            </div>
+
+            {filteredVideos.map((video, idx) => {
+              const isCurrent = video.youtubeId === activeId;
+              return (
+                <button
+                  key={video.id}
+                  onClick={() => setActiveId(video.youtubeId)}
+                  className={`group flex items-start gap-3.5 rounded-2xl border p-3 text-left transition-all ${
+                    isCurrent
+                      ? 'border-[#d9b56d] bg-[#d9b56d]/15 shadow-lg'
+                      : 'border-white/10 bg-white/[.04] hover:border-white/25 hover:bg-white/[.08]'
+                  }`}
+                >
+                  {/* Thumbnail with overlay */}
+                  <div className="relative h-20 w-32 shrink-0 overflow-hidden rounded-xl bg-stone-900 border border-white/10">
+                    <img
+                      src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`}
+                      alt={video.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105 opacity-90"
+                    />
+                    <div className="absolute inset-0 grid place-items-center bg-black/30 group-hover:bg-black/10 transition">
+                      <span
+                        className={`grid h-8 w-8 place-items-center rounded-full transition-transform ${
+                          isCurrent
+                            ? 'bg-[#d9b56d] text-[#13231c] scale-110'
+                            : 'bg-black/60 text-white group-hover:bg-[#d9b56d] group-hover:text-[#13231c]'
+                        }`}
+                      >
+                        <Play className="h-3.5 w-3.5 fill-current ml-0.5" />
+                      </span>
                     </div>
                   </div>
 
-                  {/* Duration Badge */}
-                  <span className="absolute bottom-2 right-2 px-2 py-0.5 rounded bg-black/80 backdrop-blur-sm text-[11px] font-mono text-amber-200">
-                    {video.duration}
-                  </span>
-
-                  {isCurrentlyPlaying && (
-                    <span className="absolute top-2 left-2 px-2.5 py-1 rounded-md bg-amber-500 text-stone-950 text-[10px] font-bold uppercase tracking-widest flex items-center gap-1 shadow-md">
-                      <Eye className="w-3 h-3" /> Playing
-                    </span>
-                  )}
-                </div>
-
-                {/* Card Content */}
-                <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
-                  <div className="space-y-1.5">
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-amber-400">
-                      {video.category}
-                    </span>
-                    <h4 className="text-sm font-bold text-stone-100 group-hover:text-amber-300 transition-colors line-clamp-2">
+                  {/* Video Meta */}
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-bold uppercase tracking-[.15em] text-[#d9b56d]">
+                        {video.category}
+                      </span>
+                      {isCurrent && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/20 px-2 py-0.5 text-[9px] font-bold text-emerald-400">
+                          Playing
+                        </span>
+                      )}
+                    </div>
+                    {video.amharicTitle ? (
+                      <p lang="am" className="mt-1 line-clamp-1 font-serif text-base text-white">
+                        {video.amharicTitle}
+                      </p>
+                    ) : null}
+                    <p className="mt-0.5 line-clamp-1 text-xs text-stone-300">
                       {video.title}
-                    </h4>
-                    <p className="text-xs text-stone-400 line-clamp-2">
+                    </p>
+                    <p className="mt-1 line-clamp-2 text-[11px] text-stone-400 leading-snug">
                       {video.description}
                     </p>
                   </div>
+                </button>
+              );
+            })}
+          </div>
 
-                  <div className="pt-2 border-t border-amber-900/20 flex items-center justify-between text-[11px] text-stone-400">
-                    <span className="font-mono text-amber-300/80">{video.keySignature || 'Acoustic'}</span>
-                    <span className="hover:text-amber-300 flex items-center gap-1">
-                      Play in Theater
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
+        </div>
+
+        {/* Subscribe Banner Callout */}
+        <div className="mt-12 flex flex-col sm:flex-row items-center justify-between gap-6 rounded-2xl border border-[#d9b56d]/30 bg-gradient-to-r from-[#1b3328] to-[#14261e] p-6 sm:p-8">
+          <div>
+            <h4 className="font-serif text-2xl text-white">
+              Subscribe to Aemro on YouTube
+            </h4>
+            <p className="mt-1 text-sm text-stone-300">
+              Follow his journey, support his music ministry, and receive new classical guitar recordings.
+            </p>
+          </div>
+          <a
+            href={`${YOUTUBE_CHANNEL.url}?sub_confirmation=1`}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-red-600 px-6 py-3 font-semibold text-white shadow-lg transition hover:bg-red-700 hover:scale-105 shrink-0"
+          >
+            <Youtube className="h-5 w-5 fill-current" /> Subscribe (@giutaraemro5858)
+          </a>
         </div>
 
       </div>
     </section>
   );
-};
+}

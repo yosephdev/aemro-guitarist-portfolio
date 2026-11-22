@@ -1,66 +1,51 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
+import { FaithSection } from './components/FaithSection';
 import { VideoGallery } from './components/VideoGallery';
-import { AboutSection } from './components/AboutSection';
 import { ScaleSampler } from './components/ScaleSampler';
-import { GearSection } from './components/GearSection';
+import { AboutSection } from './components/AboutSection';
 import { BookingContact } from './components/BookingContact';
 import { Footer } from './components/Footer';
-import { PERFORMANCE_VIDEOS } from './data/videos';
 
 export default function App() {
-  const [activeSection, setActiveSection] = useState<string>('hero');
-  const [selectedVideoId, setSelectedVideoId] = useState<string | null>(PERFORMANCE_VIDEOS[0].youtubeId);
+  const [activeSection, setActiveSection] = useState('home');
 
-  const handleNavigate = (sectionId: string) => {
-    setActiveSection(sectionId);
-    const element = document.getElementById(sectionId);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
+  useEffect(() => {
+    const sections = ['home', 'faith', 'music', 'scales', 'story', 'contact'];
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible) setActiveSection(visible.target.id);
+      },
+      { rootMargin: '-20% 0px -55%', threshold: [0.05, 0.25, 0.5] },
+    );
+    sections.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    });
+    return () => observer.disconnect();
+  }, []);
 
-  const handleSelectVideo = (youtubeId: string) => {
-    setSelectedVideoId(youtubeId);
-    handleNavigate('videos');
+  const navigate = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    setActiveSection(id);
   };
 
   return (
-    <div className="min-h-screen bg-[#0e0b09] text-stone-100 font-sans selection:bg-amber-500 selection:text-stone-950">
-      {/* Navigation Bar */}
-      <Navbar
-        activeSection={activeSection}
-        onNavigate={handleNavigate}
-        onOpenQuickPlay={() => handleNavigate('scales')}
-      />
-
-      {/* Hero Section */}
-      <Hero
-        onSelectVideo={handleSelectVideo}
-        onNavigate={handleNavigate}
-      />
-
-      {/* YouTube Performances Gallery & Theater Mode */}
-      <VideoGallery
-        selectedVideoId={selectedVideoId}
-        onSelectVideo={(id) => setSelectedVideoId(id)}
-      />
-
-      {/* 32-Year Journey & Biography */}
-      <AboutSection />
-
-      {/* Interactive Web Audio API Ethiopian Guitar Scale Sampler */}
-      <ScaleSampler />
-
-      {/* Gear Rig & Tone Architecture */}
-      <GearSection />
-
-      {/* Event Booking & Contact */}
-      <BookingContact />
-
-      {/* Footer */}
-      <Footer onNavigate={handleNavigate} />
+    <div className="min-h-screen overflow-x-hidden bg-[#f5efe4] text-[#1d241f] selection:bg-[#b68a43] selection:text-white">
+      <Navbar activeSection={activeSection} onNavigate={navigate} />
+      <main>
+        <Hero onNavigate={navigate} />
+        <FaithSection />
+        <VideoGallery />
+        <ScaleSampler />
+        <AboutSection />
+        <BookingContact />
+      </main>
+      <Footer onNavigate={navigate} />
     </div>
   );
 }

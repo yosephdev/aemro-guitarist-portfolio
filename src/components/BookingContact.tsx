@@ -1,351 +1,215 @@
-import React, { useState } from 'react';
-import { Calendar, Mail, Phone, MapPin, Send, CheckCircle2, Music, Sparkles, MessageSquare } from 'lucide-react';
-import { BookingRequest } from '../types';
+import { useState, type FormEvent } from 'react';
+import { Check, Copy, Facebook, Mail, MapPin, MessageCircle, Phone, Send, Sparkles, Youtube } from 'lucide-react';
+import { YOUTUBE_CHANNEL } from '../data/videos';
 
-export const BookingContact: React.FC = () => {
-  const [activeFormTab, setActiveFormTab] = useState<'booking' | 'fan'>('booking');
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+const contacts = [
+  {
+    icon: Mail,
+    label: 'Email Address',
+    value: 'aemrof@yahoo.com',
+    href: 'mailto:aemrof@yahoo.com?subject=Hello%20Aemro',
+    caption: 'Direct personal email'
+  },
+  {
+    icon: Phone,
+    label: 'Telephone',
+    value: '+46 76 287 08 02',
+    href: 'tel:+46762870802',
+    caption: 'Sweden phone / WhatsApp'
+  },
+  {
+    icon: Youtube,
+    label: 'YouTube Channel',
+    value: YOUTUBE_CHANNEL.handle,
+    href: YOUTUBE_CHANNEL.url,
+    caption: 'Subscribe & watch new videos'
+  },
+  {
+    icon: Facebook,
+    label: 'Facebook Profile',
+    value: 'Aemro Fesshaye',
+    href: 'https://www.facebook.com/search/top?q=Aemro%20Fesshaye',
+    caption: 'Connect on social media'
+  },
+  {
+    icon: MapPin,
+    label: 'Location',
+    value: 'Katrineholm, Sweden',
+    caption: 'Södermanland, Sweden'
+  },
+];
 
-  const [booking, setBooking] = useState<BookingRequest>({
-    name: '',
-    email: '',
-    eventType: 'Live Performance',
-    eventDate: '',
-    location: '',
-    budgetRange: '$1,000 - $2,500',
-    message: ''
-  });
+export function BookingContact() {
+  const [senderName, setSenderName] = useState('');
+  const [topic, setTopic] = useState('Word of Encouragement');
+  const [note, setNote] = useState('');
+  const [copiedDraft, setCopiedDraft] = useState(false);
 
-  const [fanMessage, setFanMessage] = useState({
-    name: '',
-    email: '',
-    favoriteSong: '',
-    message: ''
-  });
-
-  const handleSubmitBooking = (e: React.FormEvent) => {
+  const handleComposeEmail = (e: FormEvent) => {
     e.preventDefault();
-    setIsSubmitted(true);
+    const subject = encodeURIComponent(`[${topic}] Message from ${senderName || 'a Friend'}`);
+    const body = encodeURIComponent(
+      `Dear Aemro,\n\n${note || 'I wanted to reach out and share an encouraging word regarding your guitar music and ministry.'}\n\nWarm regards,\n${senderName || 'A friend and listener'}`
+    );
+    window.location.href = `mailto:aemrof@yahoo.com?subject=${subject}&body=${body}`;
   };
 
-  const resetForm = () => {
-    setIsSubmitted(false);
-    setBooking({
-      name: '',
-      email: '',
-      eventType: 'Live Performance',
-      eventDate: '',
-      location: '',
-      budgetRange: '$1,000 - $2,500',
-      message: ''
-    });
-    setFanMessage({
-      name: '',
-      email: '',
-      favoriteSong: '',
-      message: ''
+  const handleCopyDraft = () => {
+    const text = `To: aemrof@yahoo.com\nSubject: [${topic}] Message from ${senderName || 'a Friend'}\n\n${note || 'I wanted to reach out and share an encouraging word regarding your guitar music and ministry.'}\n\nWarm regards,\n${senderName || 'A friend and listener'}`;
+    navigator.clipboard.writeText(text).then(() => {
+      setCopiedDraft(true);
+      setTimeout(() => setCopiedDraft(false), 2500);
     });
   };
 
   return (
-    <section id="booking" className="py-24 bg-[#120e0c] relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contact" className="relative overflow-hidden bg-[#f5efe4] py-24 sm:py-32">
+      <div className="absolute -right-20 -top-32 h-96 w-96 rounded-full bg-[#d9b56d]/20 blur-3xl pointer-events-none" />
+      <div className="absolute left-10 bottom-10 h-80 w-80 rounded-full bg-[#315b48]/15 blur-3xl pointer-events-none" />
+
+      <div className="relative mx-auto max-w-7xl px-5 sm:px-8">
         
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto space-y-4 mb-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold uppercase tracking-widest">
-            <Calendar className="w-3.5 h-3.5" />
-            <span>Bookings & Connections</span>
-          </div>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-stone-100 tracking-tight">
-            Book Aemro for Your Event
-          </h2>
-          <p className="text-stone-300 text-base sm:text-lg">
-            Available for live concerts, festival stages, private acoustic galas, studio recording sessions, and masterclass guitar lessons.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-          
-          {/* Left Info Column */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="p-8 rounded-3xl bg-[#181310] border border-amber-800/40 space-y-8 shadow-2xl">
+        {/* Main Box */}
+        <div className="overflow-hidden rounded-[2.5rem] bg-[#1a3429] shadow-2xl border border-white/10">
+          <div className="grid lg:grid-cols-[1.1fr_.9fr]">
+            
+            {/* Left Content Column */}
+            <div className="p-8 text-white sm:p-12 lg:p-16 flex flex-col justify-between">
               <div>
-                <h3 className="text-2xl font-bold text-amber-100 mb-2">Direct Contact & Management</h3>
-                <p className="text-stone-300 text-sm leading-relaxed">
-                  Have a specific event date in mind? Get in touch directly to discuss concert sets, custom scale arrangements, and booking availability.
+                <span className="eyebrow eyebrow-dark">
+                  <MessageCircle className="h-4 w-4" /> Connect with Aemro · ግንኙነት
+                </span>
+                
+                <h2 className="mt-5 font-serif text-4xl leading-tight sm:text-6xl">
+                  Say hello.<br />
+                  <span className="italic text-[#e7c881]">Share an encouraging word.</span>
+                </h2>
+
+                <p className="mt-6 max-w-lg text-lg leading-8 text-stone-200">
+                  Whether you’d like to send a word of encouragement, inquire about worship gatherings, collaborate on music, or simply say hello, Aemro would love to hear from you.
                 </p>
-              </div>
 
-              <div className="space-y-4">
-                <div className="flex items-start gap-4 p-4 rounded-2xl bg-stone-900/80 border border-amber-900/30">
-                  <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-400">
-                    <Mail className="w-5 h-5" />
+                {/* Interactive Message Composer */}
+                <form onSubmit={handleComposeEmail} className="mt-8 space-y-4 rounded-2xl bg-black/25 p-6 border border-white/10 backdrop-blur">
+                  <div className="flex items-center gap-2 text-xs uppercase tracking-wider text-[#e7c881] font-bold">
+                    <Sparkles className="h-3.5 w-3.5" /> Quick Message Helper
                   </div>
-                  <div>
-                    <div className="text-xs text-stone-400 uppercase font-mono">Email Inquiries</div>
-                    <div className="text-sm font-bold text-stone-200">booking@aemroguitar.com</div>
-                  </div>
-                </div>
 
-                <div className="flex items-start gap-4 p-4 rounded-2xl bg-stone-900/80 border border-amber-900/30">
-                  <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-400">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-xs text-stone-400 uppercase font-mono">Phone / Management</div>
-                    <div className="text-sm font-bold text-stone-200">+1 (555) 32-GUITAR</div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4 p-4 rounded-2xl bg-stone-900/80 border border-amber-900/30">
-                  <div className="p-2.5 rounded-xl bg-amber-500/10 text-amber-400">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-xs text-stone-400 uppercase font-mono">Location</div>
-                    <div className="text-sm font-bold text-stone-200">Addis Ababa & Worldwide Touring</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Service Badges */}
-              <div className="pt-4 border-t border-amber-900/30 space-y-2">
-                <div className="text-xs font-bold text-amber-400 uppercase tracking-wider">
-                  Available Services
-                </div>
-                <div className="flex flex-wrap gap-2 text-xs">
-                  {['Solo Acoustic Concerts', 'Ethio-Jazz Ensemble', 'Masterclasses', 'Studio Guitar Tracking', 'Private Events'].map((s) => (
-                    <span key={s} className="px-3 py-1 rounded-full bg-amber-950/50 border border-amber-800/30 text-stone-300">
-                      {s}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          {/* Right Form Column */}
-          <div className="lg:col-span-7">
-            <div className="p-8 rounded-3xl bg-[#181310] border border-amber-800/40 shadow-2xl space-y-6">
-              
-              {/* Form switcher tabs */}
-              <div className="flex items-center gap-2 border-b border-amber-900/30 pb-4">
-                <button
-                  onClick={() => setActiveFormTab('booking')}
-                  id="form-tab-booking"
-                  className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all ${
-                    activeFormTab === 'booking'
-                      ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20'
-                      : 'bg-stone-900 text-stone-300 border border-amber-900/30'
-                  }`}
-                >
-                  <Calendar className="w-4 h-4" />
-                  <span>Event Booking Request</span>
-                </button>
-
-                <button
-                  onClick={() => setActiveFormTab('fan')}
-                  id="form-tab-fan"
-                  className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider flex items-center gap-2 transition-all ${
-                    activeFormTab === 'fan'
-                      ? 'bg-amber-500 text-stone-950 shadow-md shadow-amber-500/20'
-                      : 'bg-stone-900 text-stone-300 border border-amber-900/30'
-                  }`}
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  <span>Send Fan Message</span>
-                </button>
-              </div>
-
-              {isSubmitted ? (
-                <div className="py-12 text-center space-y-4 animate-in fade-in duration-300">
-                  <div className="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
-                    <CheckCircle2 className="w-10 h-10" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-stone-100">
-                    Message Received!
-                  </h3>
-                  <p className="text-stone-300 text-sm max-w-md mx-auto">
-                    Thank you for contacting Aemro. Our team will review your inquiry and get back to you within 24 hours.
-                  </p>
-                  <button
-                    onClick={resetForm}
-                    className="px-6 py-2.5 rounded-full bg-stone-900 border border-amber-800/40 text-amber-300 text-xs font-bold uppercase tracking-wider hover:bg-amber-950/50"
-                  >
-                    Send Another Note
-                  </button>
-                </div>
-              ) : activeFormTab === 'booking' ? (
-                <form onSubmit={handleSubmitBooking} className="space-y-4">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-stone-300 uppercase">Your Name *</label>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    <div>
+                      <label className="block text-xs font-semibold text-stone-300 mb-1">Your Name</label>
                       <input
                         type="text"
-                        required
-                        value={booking.name}
-                        onChange={(e) => setBooking({ ...booking, name: e.target.value })}
-                        placeholder="John Doe"
-                        className="w-full px-4 py-3 rounded-xl bg-stone-900 border border-amber-900/40 text-stone-100 focus:outline-none focus:border-amber-500 text-sm"
+                        value={senderName}
+                        onChange={(e) => setSenderName(e.target.value)}
+                        placeholder="e.g. Dawit / Sara"
+                        className="w-full rounded-xl bg-white/10 px-4 py-2.5 text-sm text-white placeholder-stone-400 border border-white/15 focus:border-[#e7c881] focus:outline-none"
                       />
                     </div>
 
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-stone-300 uppercase">Email Address *</label>
-                      <input
-                        type="email"
-                        required
-                        value={booking.email}
-                        onChange={(e) => setBooking({ ...booking, email: e.target.value })}
-                        placeholder="john@example.com"
-                        className="w-full px-4 py-3 rounded-xl bg-stone-900 border border-amber-900/40 text-stone-100 focus:outline-none focus:border-amber-500 text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-stone-300 uppercase">Event Type</label>
+                    <div>
+                      <label className="block text-xs font-semibold text-stone-300 mb-1">Topic</label>
                       <select
-                        value={booking.eventType}
-                        onChange={(e) => setBooking({ ...booking, eventType: e.target.value as BookingRequest['eventType'] })}
-                        className="w-full px-4 py-3 rounded-xl bg-stone-900 border border-amber-900/40 text-stone-100 focus:outline-none focus:border-amber-500 text-sm"
+                        value={topic}
+                        onChange={(e) => setTopic(e.target.value)}
+                        className="w-full rounded-xl bg-[#1a3429] px-4 py-2.5 text-sm text-white border border-white/15 focus:border-[#e7c881] focus:outline-none"
                       >
-                        <option value="Live Performance">Live Performance / Concert</option>
-                        <option value="Private Event">Private Gala / VIP Gathering</option>
-                        <option value="Masterclass / Lesson">Guitar Masterclass / Lesson</option>
-                        <option value="Studio Session">Studio Session Recording</option>
-                        <option value="Collaboration">Musical Collaboration</option>
-                      </select>
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-stone-300 uppercase">Event Date</label>
-                      <input
-                        type="date"
-                        value={booking.eventDate}
-                        onChange={(e) => setBooking({ ...booking, eventDate: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl bg-stone-900 border border-amber-900/40 text-stone-100 focus:outline-none focus:border-amber-500 text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-stone-300 uppercase">City / Location</label>
-                      <input
-                        type="text"
-                        value={booking.location}
-                        onChange={(e) => setBooking({ ...booking, location: e.target.value })}
-                        placeholder="e.g. Addis Ababa or London, UK"
-                        className="w-full px-4 py-3 rounded-xl bg-stone-900 border border-amber-900/40 text-stone-100 focus:outline-none focus:border-amber-500 text-sm"
-                      />
-                    </div>
-
-                    <div className="space-y-1">
-                      <label className="text-xs font-bold text-stone-300 uppercase">Estimated Budget</label>
-                      <select
-                        value={booking.budgetRange}
-                        onChange={(e) => setBooking({ ...booking, budgetRange: e.target.value })}
-                        className="w-full px-4 py-3 rounded-xl bg-stone-900 border border-amber-900/40 text-stone-100 focus:outline-none focus:border-amber-500 text-sm"
-                      >
-                        <option value="$500 - $1,000">$500 - $1,000</option>
-                        <option value="$1,000 - $2,500">$1,000 - $2,500</option>
-                        <option value="$2,500 - $5,000">$2,500 - $5,000</option>
-                        <option value="$5,000+">$5,000+</option>
+                        <option value="Word of Encouragement">Word of Encouragement (ማበረታቻ)</option>
+                        <option value="Worship or Church Invitation">Worship / Gathering Invitation</option>
+                        <option value="Guitar Music Inquiry">Guitar Music / Recording Inquiry</option>
+                        <option value="General Fellowship">General Greeting / Fellowship</option>
                       </select>
                     </div>
                   </div>
 
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-stone-300 uppercase">Event Details / Song Requests *</label>
+                  <div>
+                    <label className="block text-xs font-semibold text-stone-300 mb-1">Your Message</label>
                     <textarea
-                      required
-                      rows={4}
-                      value={booking.message}
-                      onChange={(e) => setBooking({ ...booking, message: e.target.value })}
-                      placeholder="Tell us about the venue, audience, duration, or specific YouTube songs you'd love Aemro to play..."
-                      className="w-full px-4 py-3 rounded-xl bg-stone-900 border border-amber-900/40 text-stone-100 focus:outline-none focus:border-amber-500 text-sm"
+                      rows={3}
+                      value={note}
+                      onChange={(e) => setNote(e.target.value)}
+                      placeholder="Write your note or Bible verse here..."
+                      className="w-full rounded-xl bg-white/10 px-4 py-2.5 text-sm text-white placeholder-stone-400 border border-white/15 focus:border-[#e7c881] focus:outline-none resize-none"
                     />
                   </div>
 
-                  <button
-                    type="submit"
-                    id="submit-booking-btn"
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-stone-950 font-extrabold uppercase tracking-wider text-xs shadow-xl shadow-amber-500/20 hover:brightness-110 flex items-center justify-center gap-2"
-                  >
-                    <Send className="w-4 h-4" />
-                    <span>Submit Booking Request</span>
-                  </button>
+                  <div className="flex flex-wrap items-center gap-3 pt-2">
+                    <button
+                      type="submit"
+                      className="inline-flex items-center gap-2 rounded-full bg-[#e7c881] px-6 py-3 text-sm font-bold text-[#193026] transition hover:bg-white hover:-translate-y-0.5"
+                    >
+                      <Send className="h-4 w-4" /> Open Email Client
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleCopyDraft}
+                      className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-4 py-3 text-xs font-semibold text-stone-200 transition hover:bg-white/15"
+                    >
+                      {copiedDraft ? (
+                        <>
+                          <Check className="h-3.5 w-3.5 text-emerald-400" /> Copied Draft
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="h-3.5 w-3.5" /> Copy Message Text
+                        </>
+                      )}
+                    </button>
+                  </div>
                 </form>
-              ) : (
-                <form onSubmit={handleSubmitBooking} className="space-y-4">
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-stone-300 uppercase">Your Name *</label>
-                    <input
-                      type="text"
-                      required
-                      value={fanMessage.name}
-                      onChange={(e) => setFanMessage({ ...fanMessage, name: e.target.value })}
-                      placeholder="Your Name"
-                      className="w-full px-4 py-3 rounded-xl bg-stone-900 border border-amber-900/40 text-stone-100 focus:outline-none focus:border-amber-500 text-sm"
-                    />
-                  </div>
+              </div>
 
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-stone-300 uppercase">Email Address *</label>
-                    <input
-                      type="email"
-                      required
-                      value={fanMessage.email}
-                      onChange={(e) => setFanMessage({ ...fanMessage, email: e.target.value })}
-                      placeholder="your@email.com"
-                      className="w-full px-4 py-3 rounded-xl bg-stone-900 border border-amber-900/40 text-stone-100 focus:outline-none focus:border-amber-500 text-sm"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-stone-300 uppercase">Favorite Video / Performance</label>
-                    <input
-                      type="text"
-                      value={fanMessage.favoriteSong}
-                      onChange={(e) => setFanMessage({ ...fanMessage, favoriteSong: e.target.value })}
-                      placeholder="e.g. Soulful Acoustic Fingerstyle Meditation"
-                      className="w-full px-4 py-3 rounded-xl bg-stone-900 border border-amber-900/40 text-stone-100 focus:outline-none focus:border-amber-500 text-sm"
-                    />
-                  </div>
-
-                  <div className="space-y-1">
-                    <label className="text-xs font-bold text-stone-300 uppercase">Your Message to Aemro *</label>
-                    <textarea
-                      required
-                      rows={4}
-                      value={fanMessage.message}
-                      onChange={(e) => setFanMessage({ ...fanMessage, message: e.target.value })}
-                      placeholder="Share your appreciation or feedback for Aemro's 32-year guitar journey..."
-                      className="w-full px-4 py-3 rounded-xl bg-stone-900 border border-amber-900/40 text-stone-100 focus:outline-none focus:border-amber-500 text-sm"
-                    />
-                  </div>
-
-                  <button
-                    type="submit"
-                    id="submit-fan-message-btn"
-                    className="w-full py-4 rounded-xl bg-gradient-to-r from-amber-400 via-amber-500 to-amber-600 text-stone-950 font-extrabold uppercase tracking-wider text-xs shadow-xl shadow-amber-500/20 hover:brightness-110 flex items-center justify-center gap-2"
-                  >
-                    <Send className="w-4 h-4" />
-                    <span>Send Message to Aemro</span>
-                  </button>
-                </form>
-              )}
-
+              <div className="mt-8 text-xs text-stone-400">
+                Aemro typically responds within a couple of days. May God bless you!
+              </div>
             </div>
-          </div>
 
+            {/* Right Contact Details Cards */}
+            <div className="grid gap-px bg-white/10">
+              {contacts.map(({ icon: Icon, label, value, href, caption }) => {
+                const inner = (
+                  <>
+                    <div className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-white/10 text-[#e7c881] transition group-hover:bg-[#e7c881] group-hover:text-[#193026]">
+                      <Icon className="h-5 w-5" />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <span className="block text-[10px] font-bold uppercase tracking-[.2em] text-[#d7c7a7]">
+                        {label}
+                      </span>
+                      <span className="mt-1 block font-serif text-xl text-white truncate group-hover:text-[#e7c881] transition-colors">
+                        {value}
+                      </span>
+                      {caption && (
+                        <span className="block text-xs text-stone-300 mt-0.5">
+                          {caption}
+                        </span>
+                      )}
+                    </div>
+                  </>
+                );
+
+                return href ? (
+                  <a
+                    key={label}
+                    href={href}
+                    target={href.startsWith('http') ? '_blank' : undefined}
+                    rel="noreferrer"
+                    className="group flex items-center gap-4 bg-[#142820] p-6 transition hover:bg-[#0f1f18] sm:p-8"
+                  >
+                    {inner}
+                  </a>
+                ) : (
+                  <div key={label} className="group flex items-center gap-4 bg-[#142820] p-6 sm:p-8">
+                    {inner}
+                  </div>
+                );
+              })}
+            </div>
+
+          </div>
         </div>
 
       </div>
     </section>
   );
-};
+}

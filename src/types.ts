@@ -2,13 +2,25 @@ export interface VideoItem {
   id: string;
   youtubeId: string;
   title: string;
-  category: 'Acoustic Solo' | 'Ethio-Jazz' | 'Live Performance' | 'Improvisation';
+  amharicTitle?: string;
+  category: 'Protestant Mezmur' | 'Praise & Thanksgiving' | 'Tigrinya Mezmur' | 'Acoustic Sessions' | 'Instrumentals';
   description: string;
-  duration: string;
+  duration?: string;
   featured?: boolean;
-  publishedYear: string;
+  publishedYear?: string;
   tuning?: string;
   keySignature?: string;
+}
+
+export interface BibleQuote {
+  id: string;
+  reference: string;
+  englishReference: string;
+  amharicText: string;
+  englishText: string;
+  category: 'Music & Praise' | 'Joy in Christ' | 'Boasting in God' | 'Grace & Hope' | 'Thanksgiving';
+  amharicCategory: string;
+  highlightWord?: string;
 }
 
 export interface TimelineMilestone {

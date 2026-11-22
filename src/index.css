@@ -1,1 +1,82 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,500;1,6..72,500&family=Noto+Serif+Ethiopic:wght@400;600;700&display=swap');
 @import "tailwindcss";
+
+:root {
+  font-family: 'DM Sans', sans-serif;
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: #f5efe4;
+}
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.font-serif {
+  font-family: 'Newsreader', Georgia, serif;
+}
+
+[lang="am"] {
+  font-family: 'Noto Serif Ethiopic', 'Newsreader', Georgia, serif;
+}
+
+.section-title {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: clamp(2.4rem, 5vw, 4.4rem);
+  line-height: 1.05;
+  letter-spacing: -.025em;
+  color: #1d2a23;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: .55rem;
+  color: #315b48;
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .2em;
+}
+
+.eyebrow-dark {
+  color: #e7c881;
+}
+
+*:focus-visible {
+  outline: 2px solid #d9b56d;
+  outline-offset: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(217, 181, 109, 0.4);
+  border-radius: 9999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(217, 181, 109, 0.8);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
